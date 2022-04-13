@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import auth from '../../../Firebase.init';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
+    const [createUserWithEmailAndPassword, user] = useCreateUserWithEmailAndPassword(auth);
     const nevigate = useNavigate();
 
     const navigateToLogin = () => {
         nevigate('/login');
     }
+
+    useEffect(() => {
+        if (user) {
+            nevigate('/home');
+        }
+    }, [user]);
 
     const handleSignUp = (event) => {
         event.preventDefault();
@@ -15,8 +25,9 @@ const Register = () => {
         const email = event.target.email.value;
         const password = event.target.password.value;
 
-        console.log(name, email, password);
+        createUserWithEmailAndPassword(email, password);
     }
+
 
     return (
         <div className='container w-50 mx-auto border border-danger p-5 my-5 rounded-3'>
@@ -47,6 +58,7 @@ const Register = () => {
                 </Button>
                 <p className='mt-2'>Already have an account? <span onClick={navigateToLogin} className='text-danger' style={{ cursor: 'pointer' }}>Login</span></p>
             </Form>
+            <SocialLogin></SocialLogin>
         </div>
     );
 };

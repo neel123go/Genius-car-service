@@ -1,18 +1,33 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import auth from '../../../Firebase.init';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
+    const [
+        signInWithEmailAndPassword,
+        user
+    ] = useSignInWithEmailAndPassword(auth);
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const nevigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
+    useEffect(() => {
+        if (user) {
+            nevigate(from, { replace: true });
+        }
+    }, [user]);
 
     const handleLogin = (event) => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        console.log(email, password);
+        signInWithEmailAndPassword(email, password);
     }
 
     const navigateToSignUp = () => {
@@ -43,6 +58,7 @@ const Login = () => {
                 </Button>
                 <p className='mt-2'>Don't have any account? <span onClick={navigateToSignUp} className='text-danger' style={{ cursor: 'pointer' }}>Sign Up</span></p>
             </Form>
+            <SocialLogin></SocialLogin>
         </div>
     );
 };
