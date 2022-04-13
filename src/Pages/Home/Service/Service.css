@@ -1,0 +1,62 @@
+.service {
+    width: 360px;
+    border: 2px solid lightgray;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.image {
+    border-radius: 20px;
+}
+
+.service button {
+    width: 100%;
+    border: none;
+    background-color: rgb(217, 76, 57);
+    color: white;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+
+@media only screen and (max-width: 650px) {
+    .service {
+        width: 300px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .image {
+        border-radius: 10px;
+        width: 300px;
+    }
+}
+
+@media only screen and (min-width: 651px) and (max-width: 999px) {
+    .service {
+        width: 300px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .image {
+        border-radius: 10px;
+        width: 300px;
+    }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1200px) {
+    .service {
+        width: 300px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .image {
+        border-radius: 10px;
+        width: 300px;
+    }
+}
