@@ -5,9 +5,12 @@ import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-
 import auth from '../../../Firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { async } from '@firebase/util';
+import Loading from '../../Shared/Loading/Loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
-    const [signInWithEmailAndPassword, user, error] = useSignInWithEmailAndPassword(auth);
+    const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
     const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
     const emailRef = useRef('');
     const passwordRef = useRef('');
@@ -23,6 +26,10 @@ const Login = () => {
         }
     }, [user]);
 
+    if (loading || sending) {
+        return <Loading></Loading>
+    };
+
     const handleLogin = (event) => {
         event.preventDefault();
         const email = emailRef.current.value;
@@ -33,7 +40,12 @@ const Login = () => {
 
     const resetPassword = async () => {
         const email = emailRef.current.value;
-        await sendPasswordResetEmail(email);
+        if (email) {
+            await sendPasswordResetEmail(email);
+            toast('Email sent');
+        } else {
+            toast('Please enter your email');
+        }
     }
 
     if (error) {
@@ -71,6 +83,7 @@ const Login = () => {
                 <p className='mt-2'>Don't have any account? <span onClick={navigateToSignUp} className='text-danger' style={{ cursor: 'pointer' }}>Sign Up</span></p>
             </Form>
             <SocialLogin></SocialLogin>
+            <ToastContainer />
         </div>
     );
 };
