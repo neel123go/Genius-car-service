@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import auth from '../../../Firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
+    const [agree, setAgree] = useState(false);
     const [createUserWithEmailAndPassword, user] = useCreateUserWithEmailAndPassword(auth);
     const nevigate = useNavigate();
 
@@ -24,8 +25,11 @@ const Register = () => {
         const name = event.target.name.value;
         const email = event.target.email.value;
         const password = event.target.password.value;
+        // const agree = event.target.terms.checked;
 
-        createUserWithEmailAndPassword(email, password);
+        if (agree) {
+            createUserWithEmailAndPassword(email, password);
+        }
     }
 
 
@@ -50,11 +54,12 @@ const Register = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control autoComplete='off' name="password" type="password" placeholder="Password" required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
+                <div className='my-3'>
+                    <input onClick={() => setAgree(!agree)} type="checkbox" name="terms" id="" />
+                    <label className={`ms-2 ${agree ? '' : 'text-secondary'}`} htmlFor="terms">By clicking, you agree to our <a href="#">terms and condition</a> and <a href="#">Privacy Statement</a></label>
+                </div>
+                <Button disabled={!agree} variant="primary" type="submit">
+                    Create an account
                 </Button>
                 <p className='mt-2'>Already have an account? <span onClick={navigateToLogin} className='text-danger' style={{ cursor: 'pointer' }}>Login</span></p>
             </Form>
