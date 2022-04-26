@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import useServiceDetails from '../../hooks/useServiceDetails';
+import PageTitle from '../Shared/PageTitle/PageTitle';
 
 const ServiceDetails = () => {
     const { serviceId } = useParams();
+    const [service] = useServiceDetails(serviceId);
+
     return (
         <div>
-            <h2 className='text-center my-5'>This is service details: {serviceId}</h2>
+            <PageTitle title='Service Details'></PageTitle>
+            <h2 className='text-center my-5'>This is a service of {service.name}</h2>
             <div className='text-center'>
-                <Link to='/checkout'>
+                <Link to={`/checkout/${serviceId}`}>
                     <button className='btn btn-primary'>Proceed to Checkout</button>
                 </Link>
             </div>

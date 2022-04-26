@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../../Firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
-import { async } from '@firebase/util';
+import PageTitle from '../../Shared/PageTitle/PageTitle';
 import Loading from '../../Shared/Loading/Loading';
 
 const Register = () => {
@@ -42,6 +42,7 @@ const Register = () => {
 
     return (
         <div className='container w-50 mx-auto border border-danger p-5 my-5 rounded-3'>
+            <PageTitle title="Sign Up"></PageTitle>
             <h2>Create an account</h2>
             <Form className='mt-5' onSubmit={handleSignUp}>
                 <Form.Group className="mb-3" controlId="formBasicName">
