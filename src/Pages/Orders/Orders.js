@@ -30,7 +30,7 @@ const Orders = () => {
         <div className='w-50 mx-auto'>
             <h2 className='text-center py-5'>Your Orders</h2>
             {
-                orders.map(order => <h2 key={order.key} className="text-center py-2">{order.service}</h2>)
+                orders.map(order => <h2 key={order._id} className="text-center py-2">{order.service}</h2>)
             }
         </div>
     );

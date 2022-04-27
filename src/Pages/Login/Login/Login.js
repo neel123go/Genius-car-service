@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
@@ -8,11 +8,12 @@ import PageTitle from '../../Shared/PageTitle/PageTitle';
 import Loading from '../../Shared/Loading/Loading';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import useToken from '../../../hooks/useToken';
 
 const Login = () => {
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
     const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+    const [token] = useToken(user);
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const navigate = useNavigate();
@@ -31,8 +32,9 @@ const Login = () => {
         const password = passwordRef.current.value;
 
         await signInWithEmailAndPassword(email, password);
-        const { data } = await axios.post('https://ancient-anchorage-81865.herokuapp.com/login', { email });
-        localStorage.setItem('accessToken', data);
+    }
+
+    if (token) {
         navigate(from, { replace: true });
     }
 

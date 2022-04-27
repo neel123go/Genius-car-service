@@ -7,21 +7,23 @@ import auth from '../../../Firebase.init';
 import { useSignInWithFacebook, useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
+import useToken from '../../../hooks/useToken';
 
 const SocialLogin = () => {
     const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
     const [signInWithFacebook, facebookUser, facebookLoading, facebookError] = useSignInWithFacebook(auth);
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
+    const [token] = useToken(googleUser || facebookUser || githubUser);
 
     const location = useLocation();
-    const nevigate = useNavigate();
+    const navigate = useNavigate();
     let from = location.state?.from?.pathname || "/";
     let loadingSpinner;
     let errorMsg;
 
     useEffect(() => {
-        if (googleUser || facebookUser || githubUser) {
-            nevigate(from, { replace: true });
+        if (token) {
+            navigate(from, { replace: true });
         }
     }, [googleUser, facebookUser, githubUser]);
 

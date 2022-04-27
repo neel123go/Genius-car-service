@@ -6,20 +6,22 @@ import auth from '../../../Firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import PageTitle from '../../Shared/PageTitle/PageTitle';
 import Loading from '../../Shared/Loading/Loading';
+import useToken from '../../../hooks/useToken';
 
 const Register = () => {
     const [agree, setAgree] = useState(false);
     const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
     const [updateProfile, updating, error] = useUpdateProfile(auth);
-    const nevigate = useNavigate();
+    const [token] = useToken(user);
+    const navigate = useNavigate();
 
     const navigateToLogin = () => {
-        nevigate('/login');
+        navigate('/login');
     }
 
     useEffect(() => {
-        if (user) {
-            nevigate('/home');
+        if (token) {
+            navigate('/home');
         }
     }, [user]);
 
