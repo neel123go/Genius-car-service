@@ -19,11 +19,9 @@ const Register = () => {
         navigate('/login');
     }
 
-    useEffect(() => {
-        if (token) {
-            navigate('/home');
-        }
-    }, [user]);
+    if (token) {
+        navigate('/home');
+    }
 
     if (loading || updating) {
         return <Loading></Loading>
